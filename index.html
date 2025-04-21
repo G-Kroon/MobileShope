@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MobileShop - Your Mobile Store</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="#">MobileShop</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav me-auto">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#" id="nav-home">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" id="nav-products">Products</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" id="nav-orders">Orders</a>
+                            </li>
+                        </ul>
+                        <div class="d-flex">
+                            <button class="btn btn-light position-relative" id="cart-button">
+                                <i data-feather="shopping-cart"></i>
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="cart-count">
+                                    0
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <!-- Main Content -->
+        <main class="app-content">
+            <!-- Home Screen -->
+            <div id="home-screen" class="app-screen active">
+                <div class="container py-4">
+                    <div class="p-5 mb-4 bg-light rounded-3 welcome-banner">
+                        <div class="container-fluid py-5">
+                            <h1 class="display-5 fw-bold">Welcome to MobileShop</h1>
+                            <p class="col-md-8 fs-4">Browse our products and make secure payments online.</p>
+                            <button class="btn btn-primary btn-lg" id="browse-products-btn">Browse Products</button>
+                        </div>
+                    </div>
+                    
+                    <div class="row align-items-md-stretch">
+                        <div class="col-md-6 mb-4">
+                            <div class="h-100 p-5 text-white bg-primary rounded-3">
+                                <h2>Latest Products</h2>
+                                <p>Check out our newest arrivals and bestsellers.</p>
+                                <button class="btn btn-outline-light" id="new-products-btn">View Latest</button>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <div class="h-100 p-5 bg-light border rounded-3">
+                                <h2>Special Offers</h2>
+                                <p>Limited time discounts and bundle offers.</p>
+                                <button class="btn btn-outline-primary" id="offers-btn">View Offers</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Products Screen -->
+            <div id="products-screen" class="app-screen">
+                <div class="container py-4">
+                    <h1 class="mb-4">Our Products</h1>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6 mb-3">
+                            <input type="text" class="form-control" id="search-products" placeholder="Search products...">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <select class="form-select" id="sort-products">
+                                <option value="default">Sort by: Default</option>
+                                <option value="price-low">Price: Low to High</option>
+                                <option value="price-high">Price: High to Low</option>
+                                <option value="name">Name: A to Z</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="row" id="products-grid">
+                        <!-- Products will be loaded here dynamically -->
+                        <div class="col-12 text-center py-5">
+                            <div class="spinner-border" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Detail Screen -->
+            <div id="product-detail-screen" class="app-screen">
+                <div class="container py-4">
+                    <button class="btn btn-outline-primary mb-4" id="back-to-products">
+                        <i data-feather="arrow-left"></i> Back to Products
+                    </button>
+                    
+                    <div id="product-detail-content">
+                        <!-- Product details will be loaded here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cart Screen -->
+            <div id="cart-screen" class="app-screen">
+                <div class="container py-4">
+                    <h1 class="mb-4">Shopping Cart</h1>
+                    
+                    <div id="cart-items">
+                        <!-- Cart items will be loaded here -->
+                    </div>
+                    
+                    <div class="text-end mt-4" id="cart-summary">
+                        <!-- Cart summary will be loaded here -->
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
+                        <button class="btn btn-outline-secondary me-md-2" id="continue-shopping">Continue Shopping</button>
+                        <button class="btn btn-primary" id="proceed-to-checkout">Proceed to Checkout</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Checkout Screen -->
+            <div id="checkout-screen" class="app-screen">
+                <div class="container py-4">
+                    <h1 class="mb-4">Checkout</h1>
+                    
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Shipping Information</h5>
+                                </div>
+                                <div class="card-body">
+                                    <form id="shipping-form">
+                                        <div class="row mb-3">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="firstName" class="form-label">First name</label>
+                                                <input type="text" class="form-control" id="firstName" required>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="lastName" class="form-label">Last name</label>
+                                                <input type="text" class="form-control" id="lastName" required>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <label for="email" class="form-label">Email</label>
+                                            <input type="email" class="form-control" id="email" required>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <label for="address" class="form-label">Address</label>
+                                            <input type="text" class="form-control" id="address" required>
+                                        </div>
+                                        
+                                        <div class="row">
+                                            <div class="col-md-5 mb-3">
+                                                <label for="country" class="form-label">Country</label>
+                                                <select class="form-select" id="country" required>
+                                                    <option value="">Choose...</option>
+                                                    <option value="US">United States</option>
+                                                    <option value="CA">Canada</option>
+                                                    <option value="UK">United Kingdom</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4 mb-3">
+                                                <label for="state" class="form-label">State</label>
+                                                <input type="text" class="form-control" id="state" required>
+                                            </div>
+                                            <div class="col-md-3 mb-3">
+                                                <label for="zip" class="form-label">Zip</label>
+                                                <input type="text" class="form-control" id="zip" required>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Payment Information</h5>
+                                </div>
+                                <div class="card-body">
+                                    <form id="payment-form">
+                                        <div id="card-element" class="mb-3">
+                                            <!-- Stripe Card Element will be inserted here -->
+                                        </div>
+                                        
+                                        <div id="card-errors" class="text-danger mb-3"></div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Order Summary</h5>
+                                </div>
+                                <div class="card-body" id="checkout-summary">
+                                    <!-- Order summary will be loaded here -->
+                                </div>
+                                <div class="card-footer">
+                                    <button class="btn btn-primary w-100" id="place-order-btn">Place Order</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Orders Screen -->
+            <div id="orders-screen" class="app-screen">
+                <div class="container py-4">
+                    <h1 class="mb-4">Your Orders</h1>
+                    
+                    <div id="orders-list">
+                        <!-- Orders will be loaded here -->
+                        <div class="alert alert-info">
+                            You haven't placed any orders yet.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Success Screen -->
+            <div id="order-success-screen" class="app-screen">
+                <div class="container py-4 text-center">
+                    <div class="mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="currentColor" class="bi bi-check-circle-fill text-success" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                        </svg>
+                    </div>
+                    <h1 class="mb-4">Order Placed Successfully!</h1>
+                    <p class="lead mb-4">Thank you for your purchase. Your order has been received and is being processed.</p>
+                    <p class="mb-4">Your order number: <strong id="order-number">ORD-12345</strong></p>
+                    <p class="mb-4">A confirmation email has been sent to your email address.</p>
+                    <div class="d-grid gap-2 col-6 mx-auto">
+                        <button class="btn btn-primary" id="continue-shopping-success">Continue Shopping</button>
+                        <button class="btn btn-outline-primary" id="view-orders">View Your Orders</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer bg-light py-3 mt-auto">
+            <div class="container text-center">
+                <p class="mb-0">© 2025 MobileShop. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="notification-toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto" id="toast-title">Notification</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body" id="toast-message">
+                This is a notification message.
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="js/products.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/payment.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

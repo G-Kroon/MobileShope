@@ -1,0 +1,7 @@
+Adds a basic e-commerce app
+
+This commit adds a basic e-commerce Android app with frontend files (index.html, css/styles.css, js/*.js) and a Node.js backend server (server.js) using Replit's .replit configuration file.  The app includes product browsing, cart functionality, and simulated checkout.
+
+Replit-Commit-Author: Agent
+Replit-Commit-Session-Id: 1db64d50-aa99-441a-afe3-5f4a6c120e28
+Replit-Commit-Screenshot-Url: https://storage.googleapis.com/screenshot-production-us-central1/9b128b04-deed-4804-957c-da6d4748082a/be42f2e1-4255-4306-900d-fcb9bce7ee6b.jpg
