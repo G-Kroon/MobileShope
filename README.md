@@ -1,4 +1,4 @@
-# MobileShop
+# [MobileShop](https://g-kroon.github.io/MobileShop/)
 
 This is a comprehensive Mobile Shop web application built with vanilla JavaScript, HTML, and CSS, using Bootstrap for styling. Here's a detailed breakdown:
 
@@ -33,14 +33,14 @@ Toast notifications for user feedback
 Loading spinners for async operations
 Product image animations  
 ## Screens:
-### Home: Welcome banner and featured sections
-### Products: Grid view with search/filter
-### Product Detail: Comprehensive product information
-### Cart: Item management and totals
-### Checkout: Payment and shipping forms
-### Orders: Order history and tracking
-### Order Success: Confirmation page  
-### Technical Implementation:  
+#### Home: Welcome banner and featured sections
+#### Products: Grid view with search/filter
+#### Product Detail: Comprehensive product information
+#### Cart: Item management and totals
+#### Checkout: Payment and shipping forms
+#### Orders: Order history and tracking
+#### Order Success: Confirmation page  
+#### Technical Implementation:  
 
 Modular JavaScript architecture (separate files for products, cart, payment)
 RESTful API endpoints (/api/products, /api/checkout)
@@ -48,4 +48,4 @@ Client-side routing
 Error handling and validation
 Responsive image handling
 MIME type support for various static assets  
-The application runs on port 5000 and is configured for production deployment through Replit's infrastructure. It demonstrates a complete e-commerce flow from browsing products to completing purchases.
+It demonstrates a complete e-commerce flow from browsing products to completing purchases.
